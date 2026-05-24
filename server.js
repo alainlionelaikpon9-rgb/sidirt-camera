@@ -20,20 +20,68 @@ app.get('/', (req, res) => {
     <html>
     <head>
       <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>SITIRT - Surveillance en direct</title>
       <style>
-        body{margin:0;background:#0a0e1a;display:flex;
-             flex-direction:column;align-items:center;
-             justify-content:center;height:100vh;color:white;
-             font-family:Arial;}
-        h2{color:#ff4444;margin-bottom:10px;}
-        img{max-width:95%;border:2px solid #ff4444;border-radius:8px;}
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{
+          background:#0a0e1a;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          justify-content:center;
+          min-height:100vh;
+          color:white;
+          font-family:Arial;
+          padding:20px;
+        }
+        h2{
+          color:#ff4444;
+          margin-bottom:15px;
+          font-size:1.4em;
+          text-align:center;
+        }
+        .camera-box{
+          width:100%;
+          max-width:900px;
+          border:3px solid #ff4444;
+          border-radius:12px;
+          overflow:hidden;
+          box-shadow:0 0 30px rgba(255,68,68,0.4);
+        }
+        img{
+          width:100%;
+          height:auto;
+          display:block;
+        }
+        .status{
+          margin-top:12px;
+          font-size:0.9em;
+          color:#aaa;
+        }
+        .dot{
+          display:inline-block;
+          width:10px;
+          height:10px;
+          background:#ff4444;
+          border-radius:50%;
+          margin-right:6px;
+          animation:blink 1s infinite;
+        }
+        @keyframes blink{
+          0%,100%{opacity:1;}
+          50%{opacity:0;}
+        }
       </style>
     </head>
     <body>
       <h2>🔥 SITIRT - Caméra en direct</h2>
-      <img src="/stream" />
+      <div class="camera-box">
+        <img src="/stream" />
+      </div>
+      <p class="status">
+        <span class="dot"></span>En direct
+      </p>
     </body>
     </html>
   `);
@@ -56,6 +104,6 @@ setInterval(() => {
   const footer = Buffer.from('\r\n');
   const packet = Buffer.concat([header, latestFrame, footer]);
   clients.forEach(c => c.write(packet));
-}, 200);
+}, 100);
 
 app.listen(PORT, () => console.log(`Serveur SITIRT actif sur port ${PORT}`));
