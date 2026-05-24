@@ -104,6 +104,6 @@ setInterval(() => {
   const footer = Buffer.from('\r\n');
   const packet = Buffer.concat([header, latestFrame, footer]);
   clients.forEach(c => c.write(packet));
-}, 100);
+}, 50);
 
 app.listen(PORT, () => console.log(`Serveur SITIRT actif sur port ${PORT}`));
